@@ -18,18 +18,17 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run:
+      - name: Extract branch name
+        id: extract_branch
+        run: |
           GITHUB_REF=${{ github.ref }}
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           echo "Github Ref is $GITHUB_REF"
-          echo "Branch Name is $BRANCH_NAME" >> $GITHUB_ENV
+          echo "Branch Name is $BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Use branch name
+        run: echo "The created branch is ${{ env.BRANCH_NAME }}"
