@@ -47,7 +47,5 @@ jobs:
           echo "The version name is ${{ env.VERSION_NAME }}"
           VERSION_FILE="version.properties"
           echo "Updating version in $VERSION_FILE to ${{ env.VERSION_NAME }}"
-          sed -i "s/^version=.*/version=${{ env.VERSION_NAME }}/" $VERSION_FILE
+          sed -i "s/versionName=.*/versionName=${{ env.VERSION_NAME }}/" $VERSION_FILE
           cat $VERSION_FILE
-          echo "Latest version is $VERSION_FILE"
-          
