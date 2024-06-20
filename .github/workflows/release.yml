@@ -52,3 +52,11 @@ jobs:
           VERSION_CODE=$(($(grep -oP '^versionCode=\K\d+' $VERSION_FILE) + 1))
           sed -i "s/^versionCode=.*/versionCode=$VERSION_CODE/" $VERSION_FILE
           cat $VERSION_FILE
+
+      - name: Commit & Push version changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add version.properties
+          git commit -m "Update version to ${{ env.VERSION_NAME }}"
+          git push
