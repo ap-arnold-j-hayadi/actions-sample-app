@@ -5,7 +5,8 @@ name: deploy-on-branch-created
 # Controls when the workflow will run
 on:
   create:
-    branches: 'release/*'
+    branches:
+      - 'release/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,11 +28,20 @@ jobs:
       - name: Extract branch name
         id: extract_branch
         run: |
+          # Extract the full reference of the branch
           GITHUB_REF=${{ github.ref }}
+          # Remove the prefix 'refs/heads/' to get the branch name
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          # Output the values for logging purposes
           echo "Github Ref is $GITHUB_REF"
           echo "Branch Name is $BRANCH_NAME"
+          # Write the variables to the $GITHUB_ENV file to make them available in subsequent steps
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "GITHUB_REF=$GITHUB_REF" >> $GITHUB_ENV
 
       - name: Use branch name
-        run: echo "The created branch is ${{ env.BRANCH_NAME }}"
+        run: |
+          # Access the environment variables using the ${{ env.VARIABLE_NAME }} syntax
+          echo "The created branch is ${{ env.BRANCH_NAME }}"
+          echo "Github Ref is ${{ env.GITHUB_REF }}"
+          
