@@ -18,7 +18,19 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify branch name
+        id: verify_branch
+        run: |
+          echo "GITHUB_REF=${{ github.ref }}"
+          BRANCH_NAME=${{ github.ref#refs/heads/ }}
+          echo "BRANCH_NAME=$BRANCH_NAME"
+          if [[ ! "$BRANCH_NAME" =~ ^release/ ]]; then
+            echo "Branch name does not match pattern. Exiting."
+            exit 1
+          fi
 
       - name: List files in repository root
         run: |
