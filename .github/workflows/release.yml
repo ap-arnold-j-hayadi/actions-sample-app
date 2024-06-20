@@ -26,8 +26,8 @@ jobs:
         run: |
           GITHUB_REF=${{ github.ref }}
           # Remove the prefix 'refs/heads/' to get the branch name
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          if [[ ! "$BRANCH_NAME" =~ ^release/ ]]; then
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          if [[ ! "$env.BRANCH_NAME" =~ ^release/ ]]; then
             echo "Branch name does not match pattern. Exiting."
             exit 1
           fi
