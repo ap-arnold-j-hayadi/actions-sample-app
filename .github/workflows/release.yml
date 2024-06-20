@@ -60,4 +60,4 @@ jobs:
           git add version.properties
           git tag "v${{ env.VERSION_NAME }}"
           git commit -m "Update version to ${{ env.VERSION_NAME }}"
-          git push
+          git push origin HEAD --tags
