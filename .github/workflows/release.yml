@@ -28,10 +28,12 @@ jobs:
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
           if [[ ! "$BRANCH_NAME" =~ ^release/ ]]; then
-            VERSION_NAME=${BRANCH_NAME#release/}
-            echo "VERSION_NAME=VERSION_NAME" >> $GITHUB_ENV
             echo "Branch name is $BRANCH_NAME and does not match pattern. Exiting."
             exit 1
+          else
+            VERSION_NAME=${BRANCH_NAME#release/}
+            echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV
+            echo "Branch name is $BRANCH_NAME and matches pattern. Continuing."
           fi
 
       - name: List files in repository root
