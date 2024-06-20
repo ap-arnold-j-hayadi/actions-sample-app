@@ -24,9 +24,9 @@ jobs:
       - name: Verify branch name
         id: verify_branch
         run: |
-          echo "GITHUB_REF=${{ github.ref }}"
-          BRANCH_NAME=${{ github.ref#refs/heads/ }}
-          echo "BRANCH_NAME=$BRANCH_NAME"
+          GITHUB_REF=${{ github.ref }}
+          # Remove the prefix 'refs/heads/' to get the branch name
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
           if [[ ! "$BRANCH_NAME" =~ ^release/ ]]; then
             echo "Branch name does not match pattern. Exiting."
             exit 1
