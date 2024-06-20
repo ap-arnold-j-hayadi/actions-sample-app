@@ -28,6 +28,8 @@ jobs:
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
           if [[ ! "$BRANCH_NAME" =~ ^release/ ]]; then
+            VERSION_NAME=${BRANCH_NAME#release/}
+            echo "VERSION_NAME=VERSION_NAME" >> $GITHUB_ENV
             echo "Branch name is $BRANCH_NAME and does not match pattern. Exiting."
             exit 1
           fi
@@ -36,25 +38,13 @@ jobs:
         run: |
           echo "List File"
           ls -la
-      # Runs a single command using the runners shell
-      - name: Extract branch name
-        id: extract_branch
-        run: |
-          echo "The created branch is ${{ env.BRANCH_NAME }}"
-#          # Extract the full reference of the branch
-#          GITHUB_REF=${{ github.ref }}
-#          # Remove the prefix 'refs/heads/' to get the branch name
-#          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-#          # Output the values for logging purposes
-#          echo "Github Ref is $GITHUB_REF"
-#          echo "Branch Name is $BRANCH_NAME"
-#          # Write the variables to the $GITHUB_ENV file to make them available in subsequent steps
-#          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-#          echo "GITHUB_REF=$GITHUB_REF" >> $GITHUB_ENV
 
-      - name: Use branch name
+      - name: Update version.properties
         run: |
-          # Access the environment variables using the ${{ env.VARIABLE_NAME }} syntax
           echo "The created branch is ${{ env.BRANCH_NAME }}"
-          echo "Github Ref is ${{ env.GITHUB_REF }}"
+          echo "The version name is ${{ env.VERSION_NAME }}"
+          VERSION_FILE="version.properties"
+          echo "Updating version in $VERSION_FILE to ${{ env.VERSION_NAME }}"
+          sed -i "s/^version=.*/version=${{ env.VERSION_NAME }}/" $VERSION_FILE
+          cat $VERSION_FILE
           
