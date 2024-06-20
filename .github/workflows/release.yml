@@ -28,7 +28,7 @@ jobs:
           # Remove the prefix 'refs/heads/' to get the branch name
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
           if [[ ! "$env.BRANCH_NAME" =~ ^release/ ]]; then
-            echo "Branch name does not match pattern. Exiting."
+            echo "Branch name is $env.BRANCH_NAME and does not match pattern. Exiting."
             exit 1
           fi
 
